@@ -22,7 +22,7 @@ import static junit.framework.TestCase.fail;
 public class LinkedinTest {
 
     private static WebDriver driver;
-    List<WebElement> listFriends;
+    private List<WebElement> listFriends;
     private static Config config;
 
     @BeforeClass
@@ -36,10 +36,16 @@ public class LinkedinTest {
     }
 
     @Test
-    public void findFriends() {
+    public void findMyFriends() {
+        loginToSite();
+        readNameFriends();
+        printNameFriends();
+        saveFile(listFriends);
+    }
+
+    private void readNameFriends(){
         try {
             Actions actions = new Actions(driver);
-            loginToSite();
             //go to page "My Network"
             driver.findElement(config.elementMyNetwork).click();
             driver.findElement(config.elementPageMyFriends).click();
@@ -52,16 +58,12 @@ public class LinkedinTest {
                 actions.perform();
                 TimeUnit.SECONDS.sleep(3);
             }
-            printNameFriends();
-            saveFile(listFriends);
+
         } catch (NoSuchElementException e) {
             fail("Element not found!!");
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            driver.close();
-
         }
     }
 
